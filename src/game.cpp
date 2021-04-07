@@ -10,7 +10,6 @@
 
 #include "render_window.h"
 
-
 int main() {    
     render_window window{800, 600, "Game of Life 3D"};
 
