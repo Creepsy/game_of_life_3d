@@ -5,9 +5,18 @@
 #include "../libs/stb_image.h"
 #undef STB_IMAGE_IMPLEMENTATION
 
+#include <string>
 #include <iostream>
 
-int main() {
-    std::cout << "Test" << std::endl;
+#include "render_window.h"
+
+
+int main() {    
+    render_window window{800, 600, "Game of Life 3D"};
+
+    while(!window.should_close()) {
+        window.update();
+    }
+
     return 0;
 }
