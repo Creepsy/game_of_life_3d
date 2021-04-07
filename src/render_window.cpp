@@ -35,6 +35,11 @@ void render_window::update() {
     glfwPollEvents();
 }
 
+void render_window::clear(GLfloat r, GLfloat g, GLfloat b, GLfloat alpha) {
+    glClearColor(r, g, b, alpha);
+    glClear(GL_COLOR_BUFFER_BIT);
+}
+
 render_window::~render_window() {
     glfwTerminate();
 }

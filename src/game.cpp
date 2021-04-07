@@ -15,6 +15,10 @@ int main() {
     render_window window{800, 600, "Game of Life 3D"};
 
     while(!window.should_close()) {
+        window.clear(0.5f, 0.2f, 0.35f, 1.0f);
+
+        //rendering goes here
+
         window.update();
     }
 
