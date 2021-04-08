@@ -48,7 +48,8 @@ unsigned int shader_program::load_shader(const std::string& path, GLenum type) {
     unsigned int shader;
 
     shader = glCreateShader(type);
-    glShaderSource(shader, 1, &shader_data, nullptr);
+    GLint shader_data_size = (GLint) shader_size;
+    glShaderSource(shader, 1, &shader_data, &shader_data_size);
     delete[] shader_data;
 
     glCompileShader(shader);
