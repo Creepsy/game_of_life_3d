@@ -11,9 +11,9 @@
 
 int main() {   
     std::vector<float> triangle_vertices = {
-        -0.5f, -0.5f, 0.0f,
-        0.5f, -0.5f, 0.0f,
-        0.0f, 0.5f, 0.0f
+        -0.5, -0.5, 0.0,
+        0.5, -0.5, 0.0,
+        0.0, 0.5, 0.0
     };
 
     render_window window(800, 600, "Game of Life 3D");
