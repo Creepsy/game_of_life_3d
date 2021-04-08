@@ -12,7 +12,7 @@ shader_program::shader_program(const std::string& vertex_shader_path, const std:
         fragment_shader = this->load_shader(fragment_shader_path, GL_FRAGMENT_SHADER);
     } catch(...) {
         glDeleteShader(vertex_shader);
-        return;
+        throw std::runtime_error("Shader compilation failed!");
     }
 
     this->id = glCreateProgram();
@@ -29,7 +29,7 @@ shader_program::shader_program(const std::string& vertex_shader_path, const std:
         char log[512];
         glGetShaderInfoLog(this->id, 512, nullptr, log);
         std::cerr << log << std::endl;
-        throw std::runtime_error("Shaderprogram linking failed!");
+        throw std::runtime_error("Shader program linking failed!");
     }
 }
 

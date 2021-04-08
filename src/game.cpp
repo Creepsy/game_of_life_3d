@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "render_window.h"
+#include "shader.h"
 #include "mesh.h"
 
 int main() {   
@@ -15,14 +16,18 @@ int main() {
         0.0f, 0.5f, 0.0f
     };
 
-    render_window window{800, 600, "Game of Life 3D"};
+    render_window window(800, 600, "Game of Life 3D");
 
-    mesh triangle{triangle_vertices, GL_STATIC_DRAW};
+    shader_program basic_shader("shaders/basic_shader.vs", "shaders/basic_shader.fs");
+    mesh triangle(triangle_vertices, GL_STATIC_DRAW);
+    
+    basic_shader.enable();
+    triangle.load();
 
     while(!window.should_close()) {
         window.clear(0.5f, 0.2f, 0.35f, 1.0f);
 
-        //rendering goes here
+        triangle.render();
 
         window.update();
     }
