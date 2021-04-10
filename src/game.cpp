@@ -21,12 +21,15 @@ int main() {
     shader_program basic_shader("shaders/basic_shader.vs", "shaders/basic_shader.fs");
     mesh triangle(triangle_vertices, GL_STATIC_DRAW);
     
+    int time_pos = basic_shader.get_uniform_location("time");
+
     basic_shader.enable();
     triangle.load();
 
     while(!window.should_close()) {
         window.clear(0.5f, 0.2f, 0.35f, 1.0f);
 
+        glUniform1f(time_pos, glfwGetTime());
         triangle.render();
 
         window.update();
