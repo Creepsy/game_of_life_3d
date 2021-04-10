@@ -13,6 +13,12 @@
 #include "shader.h"
 #include "mesh.h"
 
+struct voxel {
+    mesh& m;
+    glm::mat4 transform;
+    bool active;
+};
+
 int main() {  
     std::vector<float> cube_vertices {
         0.0, 0.0, 0.0,
