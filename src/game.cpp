@@ -14,7 +14,6 @@
 #include "mesh.h"
 
 struct voxel {
-    mesh& m;
     glm::mat4 transform;
     bool active;
 };
@@ -64,7 +63,6 @@ int main() {
     shader_program basic_shader("shaders/basic_shader.vs", "shaders/basic_shader.fs");
     mesh cube(cube_vertices, GL_STATIC_DRAW);
     
-   // int time_pos = basic_shader.get_uniform_location("time");
     int transform_pos = basic_shader.get_uniform_location("transform");
     int projection_pos = basic_shader.get_uniform_location("projection");
     int view_pos = basic_shader.get_uniform_location("view");
@@ -93,7 +91,6 @@ int main() {
         
         glUniformMatrix4fv(transform_pos, 1, GL_FALSE, glm::value_ptr(transform));
 
-        //glUniform1f(time_pos, glfwGetTime());
         cube.render();
 
         window.update();
