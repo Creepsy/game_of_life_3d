@@ -14,6 +14,7 @@ class shader_program {
     public:
         shader_program(const std::string& vertex_shader_path, const std::string& fragment_shader_path);
         void enable();
+        int get_uniform_location(const std::string& name);
         ~shader_program();
 };
 

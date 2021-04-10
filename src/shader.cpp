@@ -71,6 +71,10 @@ void shader_program::enable() {
     glUseProgram(this->id);
 }
 
+int shader_program::get_uniform_location(const std::string& name) {
+    return glGetUniformLocation(this->id, name.c_str());
+}
+
 shader_program::~shader_program() {
     glDeleteProgram(this->id);
 }
