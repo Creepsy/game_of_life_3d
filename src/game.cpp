@@ -139,7 +139,8 @@ int main() {
     return 0;
 }
 
-void handle_input(render_window& window, glm::vec3 &camera_position, glm::vec3& camera_up, glm::vec3& camera_forward, const double last_update, float& mouse_x, float& mouse_y, float& pitch, float& yaw) {
+void handle_input(render_window& window, glm::vec3 &camera_position, glm::vec3& camera_up, glm::vec3& camera_forward, const double last_update,
+ float& mouse_x, float& mouse_y, float& pitch, float& yaw) {
     float new_mouse_x, new_mouse_y;
     window.get_mouse_position(new_mouse_x, new_mouse_y);
 
