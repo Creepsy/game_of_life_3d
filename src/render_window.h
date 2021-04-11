@@ -19,5 +19,6 @@ class render_window {
         void clear(GLfloat r, GLfloat g, GLfloat b, GLfloat alpha);
         bool pressed(const int key);
         void close();
+        void get_mouse_position(float& x, float& y);
         ~render_window();
 };

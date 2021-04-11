@@ -50,6 +50,11 @@ void render_window::close() {
     glfwSetWindowShouldClose(this->window, GLFW_TRUE);
 }
 
+void render_window::get_mouse_position(float& x, float& y) {
+    glfwGetCursorPos(this->window, x, y);
+}
+
+
 render_window::~render_window() {
     glfwTerminate();
 }
