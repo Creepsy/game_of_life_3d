@@ -115,6 +115,7 @@ int main() {
         window.clear(0.5f, 0.2f, 0.35f, 1.0f);
 
         handle_input(window, camera_position, camera_up, camera_forward, last_update);
+        last_update = glfwGetTime();
 
         glm::mat4 view = glm::lookAt(camera_position, camera_forward + camera_position, camera_up);
         glUniformMatrix4fv(view_pos, 1, GL_FALSE, glm::value_ptr(view));
@@ -131,7 +132,6 @@ int main() {
         }
         
         window.update();
-        last_update = glfwGetTime();
     }
 
     return 0;
@@ -140,15 +140,15 @@ int main() {
 void handle_input(render_window& window, glm::vec3 &camera_position, glm::vec3& camera_up, glm::vec3& camera_forward, const double last_update) {
     double delta_time = glfwGetTime() - last_update;
     if(window.pressed(GLFW_KEY_W)) {
-        camera_position += camera_forward * 0.1f;
+        camera_position += camera_forward * 5.0f * (float)delta_time;
     } 
     if(window.pressed(GLFW_KEY_S)) {
-        camera_position -= camera_forward * 0.1f;
+        camera_position -= camera_forward * 5.0f * (float)delta_time;
     }
     if(window.pressed(GLFW_KEY_A)) {
-        camera_position -= glm::cross(camera_forward, camera_up) * 0.1f;
+        camera_position -= glm::cross(camera_forward, camera_up) * 5.0f * (float)delta_time;
     }
     if(window.pressed(GLFW_KEY_D)) {
-        camera_position += glm::cross(camera_forward, camera_up) * 0.1f;
+        camera_position += glm::cross(camera_forward, camera_up) * 5.0f * (float)delta_time;
     }
 }
