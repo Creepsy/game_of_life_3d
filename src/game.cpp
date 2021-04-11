@@ -9,6 +9,7 @@
 #include <iostream>
 #include <vector>
 #include <random>
+#include <cmath>
 
 #include "render_window.h"
 #include "shader.h"
@@ -19,7 +20,7 @@ struct voxel {
     bool active;
 };
 
-void handle_input(render_window& window, glm::vec3 &camera_position, glm::vec3& camera_up, glm::vec3& camera_forward, const double last_update);
+void handle_input(render_window& window, glm::vec3 &camera_position, glm::vec3& camera_up, glm::vec3& camera_forward, const double last_update, float& mouse_x, float& mouse_y, float& pitch, float& yaw);
 
 int main() { 
     srand(time(nullptr));
@@ -63,7 +64,7 @@ int main() {
         0.0, 1.0, 1.0
     };
 
-    render_window window(800, 600, "Game of Life 3D");
+    render_window window(800, 600, "Game of Life 3D", true);
 
     shader_program basic_shader("shaders/basic_shader.vs", "shaders/basic_shader.fs");
     mesh cube(cube_vertices, GL_STATIC_DRAW);
@@ -109,12 +110,13 @@ int main() {
     }
 
     double last_update = 0;
+    float mouse_x = 400.0f, mouse_y = 300.0f, pitch = 0.0f, yaw = 0.0f;
 
     while(!window.should_close()) {
         glClear(GL_DEPTH_BUFFER_BIT);
         window.clear(0.5f, 0.2f, 0.35f, 1.0f);
 
-        handle_input(window, camera_position, camera_up, camera_forward, last_update);
+        handle_input(window, camera_position, camera_up, camera_forward, last_update, mouse_x, mouse_y, pitch, yaw);
         last_update = glfwGetTime();
 
         glm::mat4 view = glm::lookAt(camera_position, camera_forward + camera_position, camera_up);
@@ -137,7 +139,23 @@ int main() {
     return 0;
 }
 
-void handle_input(render_window& window, glm::vec3 &camera_position, glm::vec3& camera_up, glm::vec3& camera_forward, const double last_update) {
+void handle_input(render_window& window, glm::vec3 &camera_position, glm::vec3& camera_up, glm::vec3& camera_forward, const double last_update, float& mouse_x, float& mouse_y, float& pitch, float& yaw) {
+    float new_mouse_x, new_mouse_y;
+    window.get_mouse_position(new_mouse_x, new_mouse_y);
+
+    pitch -= 0.075f * (new_mouse_y - mouse_y);
+    yaw += 0.075f * (new_mouse_x - mouse_x);
+    mouse_x = new_mouse_x;
+    mouse_y = new_mouse_y;
+
+    if(pitch > 89.0f) {
+        pitch = 89.0f;
+    } else if(pitch < -89.0f) {
+        pitch = -89.0f;
+    }
+
+    camera_forward = glm::vec3(cos(glm::radians(yaw)), sin(glm::radians(pitch)), sin(glm::radians(yaw)));
+    
     double delta_time = glfwGetTime() - last_update;
     if(window.pressed(GLFW_KEY_W)) {
         camera_position += camera_forward * 5.0f * (float)delta_time;
@@ -150,5 +168,15 @@ void handle_input(render_window& window, glm::vec3 &camera_position, glm::vec3& 
     }
     if(window.pressed(GLFW_KEY_D)) {
         camera_position += glm::cross(camera_forward, camera_up) * 5.0f * (float)delta_time;
+    }
+    if(window.pressed(GLFW_KEY_LEFT_SHIFT)) {
+        camera_position -= camera_up * 5.0f * (float)delta_time;
+    }
+    if(window.pressed(GLFW_KEY_SPACE)) {
+        camera_position += camera_up * 5.0f * (float)delta_time;
+    }
+    
+    if(window.pressed(GLFW_KEY_ESCAPE)) {
+        window.close();
     }
 }
