@@ -9,7 +9,7 @@ class render_window {
     private:
         GLFWwindow* window;
     public:
-        render_window(const unsigned int width, const unsigned int height, const std::string& title);
+        render_window(const unsigned int width, const unsigned int height, const std::string& title, const bool disable_cursor = false);
         render_window(const render_window& other) = delete;
         render_window(render_window&& tmp) = delete;
         render_window& operator=(const render_window& other) = delete;
@@ -18,5 +18,6 @@ class render_window {
         void update();
         void clear(GLfloat r, GLfloat g, GLfloat b, GLfloat alpha);
         bool pressed(const int key);
+        void close();
         ~render_window();
 };

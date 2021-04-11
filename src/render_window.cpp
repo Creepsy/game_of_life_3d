@@ -2,7 +2,7 @@
 
 #include <stdexcept>
 
-render_window::render_window(const unsigned int width, const unsigned int height, const std::string& title) {
+render_window::render_window(const unsigned int width, const unsigned int height, const std::string& title, const bool disable_cursor) {
     if(glfwInit() == GLFW_FALSE) throw std::runtime_error("Unable to initialize GLFW!");;
 
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -23,6 +23,8 @@ render_window::render_window(const unsigned int width, const unsigned int height
         throw std::runtime_error("Unable to initialize GLAD!");
     };
 
+    if(disable_cursor) glfwSetInputMode(this->window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);  
+
     glViewport(0, 0, width, height);
 }
 
@@ -42,6 +44,10 @@ void render_window::clear(GLfloat r, GLfloat g, GLfloat b, GLfloat alpha) {
 
 bool render_window::pressed(const int key) {
     return glfwGetKey(this->window, key) == GLFW_PRESS;
+}
+
+void render_window::close() {
+    glfwSetWindowShouldClose(this->window, GLFW_TRUE);
 }
 
 render_window::~render_window() {
