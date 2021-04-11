@@ -51,7 +51,10 @@ void render_window::close() {
 }
 
 void render_window::get_mouse_position(float& x, float& y) {
-    glfwGetCursorPos(this->window, x, y);
+    double x_pos, y_pos;
+    glfwGetCursorPos(this->window, &x_pos, &y_pos);
+    x = (float) x_pos;
+    y = (float) y_pos;
 }
 
 
