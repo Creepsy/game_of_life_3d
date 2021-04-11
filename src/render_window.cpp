@@ -40,6 +40,10 @@ void render_window::clear(GLfloat r, GLfloat g, GLfloat b, GLfloat alpha) {
     glClear(GL_COLOR_BUFFER_BIT);
 }
 
+bool render_window::pressed(const int key) {
+    return glfwGetKey(this->window, key) == GLFW_PRESS;
+}
+
 render_window::~render_window() {
     glfwTerminate();
 }

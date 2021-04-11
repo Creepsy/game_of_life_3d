@@ -17,5 +17,6 @@ class render_window {
         bool should_close();
         void update();
         void clear(GLfloat r, GLfloat g, GLfloat b, GLfloat alpha);
+        bool pressed(const int key);
         ~render_window();
 };
