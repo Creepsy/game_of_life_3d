@@ -20,7 +20,9 @@ struct voxel {
     bool active;
 };
 
-void handle_input(render_window& window, glm::vec3 &camera_position, glm::vec3& camera_up, glm::vec3& camera_forward, const double last_update, float& mouse_x, float& mouse_y, float& pitch, float& yaw);
+void handle_input(render_window& window, glm::vec3 &camera_position, glm::vec3& camera_up, glm::vec3& camera_forward, const double last_update,
+ float& mouse_x, float& mouse_y, float& pitch, float& yaw);
+std::vector<std::vector<std::vector<voxel>>> create_grid(const size_t width, const size_t height, const size_t length, const float size);
 
 int main() { 
     srand(time(nullptr));
@@ -90,24 +92,9 @@ int main() {
 
     glEnable(GL_DEPTH_TEST);
 
-    std::vector<std::vector<std::vector<voxel>>> grid;
-    grid.reserve(10);
-    for(int x = 0; x < 10; x++) {
-        std::vector<std::vector<voxel>> x_row;
-        x_row.reserve(10);
-        for(int y = 0; y < 10; y++) {
-            std::vector<voxel> y_row;
-            y_row.reserve(10);
-            for(int z = 0; z < 10; z++) {
-                glm::mat4 transform = glm::mat4(1.0f);
-                transform = glm::scale(transform, glm::vec3(0.2, 0.2, 0.2));
-                transform = glm::translate(transform, glm::vec3(x, y, z));
-                y_row.push_back(voxel{transform, (bool)(rand() % 2)});
-            }
-            x_row.push_back(y_row);
-        }
-        grid.push_back(x_row);
-    }
+    const size_t width = 25, height = 50, length = 25;
+
+    std::vector<std::vector<std::vector<voxel>>> grid = create_grid(width, height, length, 0.1f);
 
     double last_update = 0;
     float mouse_x = 400.0f, mouse_y = 300.0f, pitch = 0.0f, yaw = 0.0f;
@@ -122,9 +109,9 @@ int main() {
         glm::mat4 view = glm::lookAt(camera_position, camera_forward + camera_position, camera_up);
         glUniformMatrix4fv(view_pos, 1, GL_FALSE, glm::value_ptr(view));
 
-        for(int x = 0; x < 10; x++) {
-            for(int y = 0; y < 10; y++) {
-                for(int z = 0; z < 10; z++) {
+        for(int x = 0; x < width; x++) {
+            for(int y = 0; y < height; y++) {
+                for(int z = 0; z < length; z++) {
                     if(grid[x][y][z].active) {
                         glUniformMatrix4fv(transform_pos, 1, GL_FALSE, glm::value_ptr(grid[x][y][z].transform));
                         cube.render();
@@ -149,10 +136,10 @@ void handle_input(render_window& window, glm::vec3 &camera_position, glm::vec3& 
     mouse_x = new_mouse_x;
     mouse_y = new_mouse_y;
 
-    if(pitch > 89.0f) {
-        pitch = 89.0f;
-    } else if(pitch < -89.0f) {
-        pitch = -89.0f;
+    if(pitch > 90.0f) {
+        pitch = 90.0f;
+    } else if(pitch < -90.0f) {
+        pitch = -90.0f;
     }
 
     camera_forward = glm::vec3(cos(glm::radians(yaw)), sin(glm::radians(pitch)), sin(glm::radians(yaw)));
@@ -180,4 +167,27 @@ void handle_input(render_window& window, glm::vec3 &camera_position, glm::vec3& 
     if(window.pressed(GLFW_KEY_ESCAPE)) {
         window.close();
     }
+}
+
+std::vector<std::vector<std::vector<voxel>>> create_grid(const size_t width, const size_t height, const size_t length, const float size) {
+    std::vector<std::vector<std::vector<voxel>>> grid;
+    grid.reserve(width);
+    for(int x = 0; x < width; x++) {
+        std::vector<std::vector<voxel>> x_row;
+        x_row.reserve(height);
+        for(int y = 0; y < height; y++) {
+            std::vector<voxel> y_row;
+            y_row.reserve(length);
+            for(int z = 0; z < length; z++) {
+                glm::mat4 transform = glm::mat4(1.0f);
+                transform = glm::scale(transform, glm::vec3(size, size, size));
+                transform = glm::translate(transform, glm::vec3(x, y, z));
+                y_row.push_back(voxel{transform, (bool)(rand() % 2)});
+            }
+            x_row.push_back(y_row);
+        }
+        grid.push_back(x_row);
+    }
+
+    return grid;
 }
